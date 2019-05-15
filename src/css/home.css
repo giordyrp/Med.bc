@@ -1,0 +1,47 @@
+.left-menus {
+  position: fixed;
+  width: 200px;
+  height: 100%;
+  padding-right: 0 !important;
+  background-color: #42a5f5;
+  font-size: 12px !important;}
+  .left-menus .menu {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    display: block;
+    cursor: pointer;
+    text-transform: capitalize !important;
+    padding: 15px 10px 15px 18px; }
+    .left-menus .menu .angle.down.icon,
+    .left-menus .menu .angle.up.icon {
+      right: 10px;
+      position: absolute; }
+  .left-menus .menu .icon:first-child {
+    margin-right: 10px; }
+  .left-menus .menu.active {
+    border-right: 4px solid #fff;
+    background-color: #0c74c2; }
+
+.home {
+  
+  width: 100vw;
+  padding-left:200px;
+  padding-top:20px;
+  background-color:#f8f8f8;
+
+  
+}
+
+.bg{
+  background-image: url("../images/back.png");
+  background-size: cover;
+}
+
+.main {
+  min-height: 100vh;
+  
+  display: inline;
+}
+    
