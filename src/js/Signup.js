@@ -42,7 +42,7 @@ class Signup extends React.Component {
         validateUsername () {
             return new Promise  ((resolve, reject)=>{
               this.setState({uid:this.state.uid.trim()},()=>{
-                let reg = /^([A-Za-z0-9]{6,40})$/ ;
+                let reg = /^([A-Za-z0-9]{3,40})$/ ;
                 if(reg.test(this.state.uid) === false)
                 {     
                 this.setState({errors:[...this.state.errors,"Invalid username"]})
@@ -127,7 +127,7 @@ class Signup extends React.Component {
             <div style={{minHeight: '100vh', display: 'flex', flexDirection:'row'}}>
         <div style={{flex: 1,backgroundColor:'#42a5f5'}}>
             <div style={{position:'absolute', left:50, top:50}}>
-            <Image src='../images/logo.png' size="small" centered></Image>
+            <Image src='../images/logoOnBlue.png' size="small" centered></Image>
             <Header as='h3' textAlign='center' style={{margin:0, color:'white'}}>
                 A medical Blockchain for you!
             </Header>

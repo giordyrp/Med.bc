@@ -76,7 +76,7 @@ class Content extends React.Component {
 
       <div className="main">
         <div className="left-menus">
-        <Image alt="Med.bc logo" src='../images/logo.png' si />
+        <Image alt="Med.bc logo" src='../images/logoOnBlue.png' size="small" centered style={{marginTop:15}} />
           <Divider />
           <p style={{fontSize:18,fontWeight:'bold',margin:0,padding:0, color:'white', paddingLeft:'10px'}}>{this.state.agent.name}</p>
           <p style={{fontSize:15,fontWeight:'bold',margin:0,padding:0, color:'white',paddingLeft:'10px'}}>{this.state.agent.aType=="pt"?"Patient":this.state.agent.aType=="dc"?"Doctor":this.state.agent.aType=="lb"?"Laboratory":this.state.agent.aType=="oth"?"Other":"Admin"}</p>

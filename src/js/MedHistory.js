@@ -139,7 +139,7 @@ watchEvents() {
 validateName () {
   return new Promise  ((resolve, reject)=>{
     this.setState({name:this.state.name.trim()},()=>{
-      let reg = /^([A-Za-z]{6,40})$/ ;
+      let reg = /^([A-Za-z ]{6,40})$/ ;
       if(reg.test(this.state.name) === false)
       {     
       this.setState({errorsInfo:[...this.state.errorsInfo,"Invalid Name"]})
@@ -384,7 +384,7 @@ this.props.searchedAgent.uid == this.props.loggedAgent.uid ?
         <label>Phone Number</label>
         <input disabled={this.props.loggedAgent.aType == "dc" && this.state.relationship.access=="fa"? false : true} value={this.state.phone} onChange={(ph) => this.setState({ phone: ph.target.value })} />
       </Form.Field>
-      {this.props.loggedAgent.aType == "dc"  && this.state.relationship.access=="fa"?
+      {this.state.relationship.type=="fd"?
       [<Button type='submit' primary onClick={this.setAll}>Save</Button>
       ,<Loader active={this.state.setAllLoader} inline />
       ]

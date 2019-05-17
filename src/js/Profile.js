@@ -130,7 +130,7 @@ class Profile extends Component {
     }).watch((error, event) => {
       //console.log("active event")
       //console.log(event)
-      if(event.args.i==this.props.relationship.id){
+      if(this.props.relationship!=null && event.args.i==this.props.relationship.id){
         this.setState({ active:event.args.active,activeLoader:false });
       }
     })
@@ -138,7 +138,7 @@ class Profile extends Component {
       fromBlock: 'latest' ,
       toBlock: 'latest'
     }).watch((error, event) => {
-      if(event.args.ot==this.props.loggedAgent.address){
+      if(this.props.relationship!=null && event.args.ot==this.props.loggedAgent.address){
         this.setState({ sent: true, sentLoader:false });
       }
     })
