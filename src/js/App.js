@@ -44,7 +44,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // TODO: Refactor with promise chain at('0x41b4ded52aeffc60c910e34b063cd5cde6a6cd1c') at('0xD1c5DC3522820E99BAAe79D270B9648922D2D9bB') 0xdea9352f7ba6fe2036480f9098afa194c7602425 sin MH actualización
     
     console.log("aro");
     this.web3.eth.getCoinbase((err, account) => {

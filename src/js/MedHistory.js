@@ -403,7 +403,7 @@ this.props.searchedAgent.uid == this.props.loggedAgent.uid ?
     [<Form style={{ margin: 20 }}>
     <Form.Field>
     <label>Haemoglobin Level</label>
-    <Input placeholder="Haemoglobin Level" onChange={(hl)=>this.setState({ hLevel: hl.target.value })}></Input>
+    <Input  onChange={(hl)=>this.setState({ hLevel: hl.target.value })}></Input>
     <label>Date</label>
     <DatePicker selected={this.state.date} onChange={(dt)=>this.setState({ date: dt })}/>
     </Form.Field>
