@@ -34,18 +34,12 @@ class App extends React.Component {
     }
 
     this.web3 = new Web3(this.web3Provider)
-    
-
     this.platform = TruffleContract(Platform)
     this.platform.setProvider(this.web3Provider)
-
-    this.registerAgent = this.registerAgent.bind(this)
-    this.watchEvents = this.watchEvents.bind(this)
   }
 
   componentDidMount() {
     
-    console.log("aro");
     this.web3.eth.getCoinbase((err, account) => {
       this.setState({ account })
       console.log(account)
@@ -57,24 +51,18 @@ class App extends React.Component {
       });
       this.platform.at('0xdc03a73d1c9989ccc3beecaaf64ccb1022910070').then((platformInstance) => {
         this.platformInstance = platformInstance 
-        console.log(this.platformInstance.address)
-        
         this.watchEvents()
         return this.platformInstance.getAgentIndex({from:this.state.account})})
         .then((index) => {
-          console.log("index : "+index.toNumber());
         var rgd = index == 0 ? false : true;
-        this.setState({ registered:rgd, loading: false })
-        
+        this.setState({ registered:rgd, loading: false })   
         }) 
-      })
-      
+      })  
   }
 
   watchEvents() {
-    // TODO: trigger event when vote is counted, not when component renders
     this.platformInstance.registerEvent({}, {
-      fromBlock: 0,
+      fromBlock: 'latest',
       toBlock: 'latest'
     }).watch((error, event) => {
       if(event.args.agentAddress==this.state.account){
@@ -84,31 +72,17 @@ class App extends React.Component {
     })
   }
 
-  registerAgent(name, uid, did, type) {
-    //console.log("Name:------------------>"+type);
-    this.setState({ registering: true })
-    this.platformInstance.registerAgent(name,uid,did,type,{ from: this.state.account })
-    /*.then(() =>
-      //this.setState({ registered: true })
-    )*/
-  }
-
-
-
   render() {
     return (
       <div >
-        <div >
-          
-          { this.state.loading
-            ? <Loader active inline />
+        <div >       
+          { this.state.loading ?
+            <Loader active inline />
             : 
             !this.state.registered? 
             <Signup account={this.state.account} web3={this.web3} platformInstance={this.platformInstance} ></Signup>
             :
-            <div style={{minHeight: '100vh'}}><Content registered={this.state.registered} account={this.state.account} web3={this.web3} platformInstance={this.platformInstance}
-                /></div>
-                
+            <div style={{minHeight: '100vh'}}><Content registered={this.state.registered} account={this.state.account} web3={this.web3} platformInstance={this.platformInstance}/></div>               
           }
         </div>
       </div> 

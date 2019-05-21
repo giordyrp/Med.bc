@@ -45,8 +45,6 @@ function getAType(ag) {
 function getMHistory(ag) {
   return new Promise((res, rej) => {
     ag.mHistory((err, mh) => {
-      ////console.log("::::::::::::::::::::::obtengo mhaddress");
-      ////console.log(mh);
       res(mh);
     });
   });
@@ -67,10 +65,10 @@ function getPhoneNumber(mh) {
   });
 }
 
-function getHRbyId(mh,i){
-  return new Promise((res,rej)=>{
+function getHRbyId(mh, i) {
+  return new Promise((res, rej) => {
     mh.haemoglobinRecords(i, (err, hr) => {
-      res({ i:i, x: hr[1], y: parseFloat(hr[0]) });
+      res({ i: i, x: hr[1], y: parseFloat(hr[0]) });
     });
   });
 }
@@ -80,22 +78,17 @@ function getHaemoglobinRecords(mh) {
     var haemoglobinRecords = [];
     var ri = 1;
     mh.haemoglobinRecordsCount((err, hrc) => {
-      ////console.log("HRC:"+hrc);
       if (hrc == 0) {
         res(haemoglobinRecords);
       }
       for (var i = 1; i <= hrc; i++) {
-        getHRbyId(mh,i).then((ar)=>{
-          haemoglobinRecords =[...haemoglobinRecords,ar]
-          if(haemoglobinRecords.length==hrc){
-            haemoglobinRecords = haemoglobinRecords.sort((a,b)=> a.i-b.i)
-       
+        getHRbyId(mh, i).then((ar) => {
+          haemoglobinRecords = [...haemoglobinRecords, ar]
+          if (haemoglobinRecords.length == hrc) {
+            haemoglobinRecords = haemoglobinRecords.sort((a, b) => a.i - b.i)
             res(haemoglobinRecords)
           }
-
         });
-     
-        
       }
     });
   });
@@ -103,11 +96,7 @@ function getHaemoglobinRecords(mh) {
 
 export function getDataByPrivacy(privacy, data) {
   return new Promise((res, rej) => {
-    //console.log("data in")
-    //console.log(data);
-    //console.log("pr");
-    //console.log(privacy);
-    if(data.length==0){res(data)}
+    if (data.length == 0) { res(data) }
     switch (privacy) {
       case "fal": {
         var aData = [];
@@ -121,8 +110,6 @@ export function getDataByPrivacy(privacy, data) {
           }
           i++;
           if (i == data.length) {
-            ////console.log("data out")
-            ////console.log(aData)
             res(aData)
           }
         });
@@ -141,8 +128,6 @@ export function getDataByPrivacy(privacy, data) {
           }
           i++;
           if (i == data.length) {
-            ////console.log("data out")
-            ////console.log(aData)
             res(aData)
           }
         });
@@ -152,10 +137,7 @@ export function getDataByPrivacy(privacy, data) {
         var aData = [];
         for (var i = data.length - 4; i < data.length; i++) {
           aData.push({ x: data[i].x, y: data[i].y })
-          ////console.log(aData)
           if (aData.length == 4) {
-            ////console.log("data out")
-            ////console.log(aData)
             res(aData)
           }
         }
@@ -183,7 +165,6 @@ export function getDataByPrivacy(privacy, data) {
                 res([{ x: "AVG-σ", y: avg - sd }, { x: "AVG", y: avg }, { x: "AVG+σ", y: avg + sd }])
               }
             })
-
           }
         });
         break;
@@ -194,7 +175,6 @@ export function getDataByPrivacy(privacy, data) {
       }
     }
   });
-
 }
 
 
@@ -228,45 +208,42 @@ export function getMHistoryData(web3, mhAddress) {
   });
 }
 
-export function addHaemoglobinRecord(web3, mhAddress, val, dt, ot,ow) {
+export function addHaemoglobinRecord(web3, mhAddress, val, dt, ot, ow) {
   return new Promise((res, rej) => {
     let mh = web3.eth.contract(medHistoryJSON.abi).at(mhAddress);
-      mh.addHaemoglobinRecord(val, dt,ow,ot,{ from: ot },function(error, result){
-        if(!error)
+    mh.addHaemoglobinRecord(val, dt, ow, ot, { from: ot }, function (error, result) {
+      if (!error)
         res(true)
-        else
-            res(false)
-    });
-
-    
-
-  });
-}
-
-export function SetMHistoryAll(web3, mhAddress, nm, ha, pn, ot,ow) {
-  return new Promise((res, rej) => {
-  let mh = web3.eth.contract(medHistoryJSON.abi).at(mhAddress);
-  mh.setAll(nm, ha, pn,ow,ot ,{ from: ot }, function(error, result){
-    if(!error)
-    res(true)
-    else
+      else
         res(false)
-});
+    });
   });
 }
 
-function getAgentById(platformInstance,i){
-  return new Promise((res,rej)=>{
-    platformInstance.agents(i).then((agent)=>{
+export function SetMHistoryAll(web3, mhAddress, nm, ha, pn, ot, ow) {
+  return new Promise((res, rej) => {
+    let mh = web3.eth.contract(medHistoryJSON.abi).at(mhAddress);
+    mh.setAll(nm, ha, pn, ow, ot, { from: ot }, function (error, result) {
+      if (!error)
+        res(true)
+      else
+        res(false)
+    });
+  });
+}
+
+function getAgentById(platformInstance, i) {
+  return new Promise((res, rej) => {
+    platformInstance.agents(i).then((agent) => {
       let ag = web3.eth.contract(agentJSON.abi).at(agent);
-      getAddress(ag).then((address)=>{
-        getName(ag).then((name)=>{
-          getUid(ag).then((uid)=>{
-            getDid(ag).then((did)=>{
-              getAType(ag).then((aType)=>{
-                getMHistory(ag).then((mh)=>{
+      getAddress(ag).then((address) => {
+        getName(ag).then((name) => {
+          getUid(ag).then((uid) => {
+            getDid(ag).then((did) => {
+              getAType(ag).then((aType) => {
+                getMHistory(ag).then((mh) => {
                   var agentArray = {
-                    i:i,
+                    i: i,
                     address: address,
                     name: name,
                     uid: uid,
@@ -274,15 +251,14 @@ function getAgentById(platformInstance,i){
                     aType: aType,
                     mHistory: mh
                   };
-                    res(agentArray)
-
+                  res(agentArray)
                 });
-              });                    
+              });
             });
           });
         });
       });
-    });    
+    });
   })
 }
 
@@ -290,22 +266,20 @@ export function getAgents(platformInstance, web3) {
   return new Promise((res, rej) => {
 
     platformInstance.agentsCount().then((aCount) => {
-      ////console.log("Count")
-      ////console.log(aCount.toNumber())
       var list = [];
-      if(aCount==0){res(list)}
+      if (aCount == 0) { res(list) }
       for (var i = 1; i <= aCount; i++) {
-        getAgentById(platformInstance,i).then((agent)=>{
-            list =[...list,agent]
-          if(list.length==aCount){
-            list = list.sort((a,b)=> a.i-b.i)
-            var filtered = list.filter(function(item) { 
-              return item.aType == "pt";  });
+        getAgentById(platformInstance, i).then((agent) => {
+          list = [...list, agent]
+          if (list.length == aCount) {
+            list = list.sort((a, b) => a.i - b.i)
+            var filtered = list.filter(function (item) {
+              return item.aType == "pt";
+            });
             res(filtered)
           }
         })
-      }   
-
+      }
     })
   });
 }
@@ -313,41 +287,33 @@ export function getAgents(platformInstance, web3) {
 export function getAgentByUID(platformInstance, web3, userId) {
   return new Promise((res, rej) => {
     platformInstance.agentsCount().then(async (aCount) => {
-      ////console.log("Count")
-      ////console.log(aCount.toNumber())
-
       for (var i = 1; i <= aCount; i++) {
-        ////console.log("entro")
-       platformInstance.agents(i).then((agent)=>{
-        let ag = web3.eth.contract(agentJSON.abi).at(agent);
-        ////console.log(ag);
-        getAddress(ag).then((address)=>{
-          getName(ag).then((name)=>{
-            getUid(ag).then((uid)=>{
-              getDid(ag).then((did)=>{
-                getAType(ag).then((aType)=>{
-                  getMHistory(ag).then((mh)=>{
-                    var agentArray = {
-                      address: address,
-                      name: name,
-                      uid: uid,
-                      did: did,
-                      aType: aType,
-                      mHistory: mh
-                    };
-                    ////console.log("armado del i:"+i)
-                    ////console.log(agentArray)
-          
-                    if (userId == uid) {
-                      res(agentArray)
-                    }
+        platformInstance.agents(i).then((agent) => {
+          let ag = web3.eth.contract(agentJSON.abi).at(agent);
+          getAddress(ag).then((address) => {
+            getName(ag).then((name) => {
+              getUid(ag).then((uid) => {
+                getDid(ag).then((did) => {
+                  getAType(ag).then((aType) => {
+                    getMHistory(ag).then((mh) => {
+                      var agentArray = {
+                        address: address,
+                        name: name,
+                        uid: uid,
+                        did: did,
+                        aType: aType,
+                        mHistory: mh
+                      };
+                      if (userId == uid) {
+                        res(agentArray)
+                      }
+                    });
                   });
-                });                    
+                });
               });
             });
           });
         });
-       });                
       }
     })
   });
@@ -355,19 +321,13 @@ export function getAgentByUID(platformInstance, web3, userId) {
 }
 
 export function setMedHistory(platformInstance, web3, userAddress, nm, ha, pn, account) {
-  ////console.log("--------------ME llaman")
   platformInstance.agentsCount().then((aCount) => {
-    ////console.log("Count")
-    ////console.log(aCount.toNumber())
     for (var i = 1; i <= aCount; i++) {
-      ////console.log("entro")
       platformInstance.agents(i).then((agent) => {
         let ag = web3.eth.contract(agentJSON.abi).at(agent);
 
         getAddress(ag).then((ad) => {
-          ////console.log("ad:"+ad+" userAddress:"+userAddress)
           if (ad == userAddress) {
-            ////console.log("EPA....>")
             ag.setMedHistory(nm, ha, pn, { from: account }, () => {
               i = account + 1;
             });
@@ -383,18 +343,16 @@ export function setMedHistory(platformInstance, web3, userAddress, nm, ha, pn, a
 export function getAgentByAddress(platformInstance, web3, userAddress) {
   return new Promise((res, rej) => {
     platformInstance.agentsCount().then((aCount) => {
-      //////console.log("Count")
-      //////console.log(aCount.toNumber())
+
       for (var i = 1; i <= aCount; i++) {
-        ////console.log("entro al for")
-        platformInstance.agents(i).then((agent)=>{
+        platformInstance.agents(i).then((agent) => {
           let ag = web3.eth.contract(agentJSON.abi).at(agent);
-          getAddress(ag).then((address)=>{
-            getName(ag).then((name)=>{
-              getUid(ag).then((uid)=>{
-                getDid(ag).then((did)=>{
-                  getAType(ag).then((aType)=>{
-                    getMHistory(ag).then((mh)=>{
+          getAddress(ag).then((address) => {
+            getName(ag).then((name) => {
+              getUid(ag).then((uid) => {
+                getDid(ag).then((did) => {
+                  getAType(ag).then((aType) => {
+                    getMHistory(ag).then((mh) => {
                       var agentArray = {
                         address: address,
                         name: name,
@@ -403,34 +361,16 @@ export function getAgentByAddress(platformInstance, web3, userAddress) {
                         aType: aType,
                         mHistory: mh
                       };
-                      ////console.log("armado del i:"+i)
-                      ////console.log(agentArray)
-            
                       if (userAddress == address) {
                         res(agentArray)
                       }
                     });
-                  });                    
+                  });
                 });
               });
             });
           });
-
-          
-
         });
-        ////console.log(agent)
-        
-        //////console.log(ag);
-        
-
-
-
-
-
-
-
-
       }
     })
   });
@@ -441,8 +381,7 @@ export function getPatientsDoctors(platformInstance, web3) {
   return new Promise((res, rej) => {
 
     platformInstance.agentsCount().then(async (aCount) => {
-      ////console.log("Count")
-      ////console.log(aCount.toNumber())
+
       var pList = [];
       var dList = [];
       var id = 1;
@@ -450,56 +389,43 @@ export function getPatientsDoctors(platformInstance, web3) {
       var dCont = 1;
       for (var i = 1; i <= aCount; i++) {
         var agent = await platformInstance.agents(i);
-          let ag = web3.eth.contract(agentJSON.abi).at(agent);
-          ////console.log(ag);
-          var address = await getAddress(ag);
+        let ag = web3.eth.contract(agentJSON.abi).at(agent);
+        var address = await getAddress(ag);
         var name = await getName(ag);
         var uid = await getUid(ag);
         var did = await getDid(ag);
         var aType = await getAType(ag);
         var rs = await getFamilyDoctorRelationship(platformInstance, address);
-
-
-                      var agentArray = {
-                        id: aType == "pt" ? pCont : dCont,
-                        address: address,
-                        name: name,
-                        uid: uid,
-                        did: did,
-                        aType: aType,
-                        fdAddress: rs == null ? null : rs.other
-                      };
-                      if (aType == "pt") {
-                        //console.log("agrego pt" + id + " con i:" + i);
-                        //console.log(agentArray)
-                        pList = [...pList, agentArray];
-                        pCont++;
-                      } else if (aType == "dc") {
-                        dList = [...dList, agentArray];
-                        dCont++;
-                      }
-                      if (id == aCount) {
-                        var fn = { patients: pList, doctors: dList }
-                        //console.log(fn)
-                        res(fn);
-                      }
-
-                      id++;
-
- 
-
-
+        var agentArray = {
+          id: aType == "pt" ? pCont : dCont,
+          address: address,
+          name: name,
+          uid: uid,
+          did: did,
+          aType: aType,
+          fdAddress: rs == null ? null : rs.other
+        };
+        if (aType == "pt") {
+          pList = [...pList, agentArray];
+          pCont++;
+        } else if (aType == "dc") {
+          dList = [...dList, agentArray];
+          dCont++;
+        }
+        if (id == aCount) {
+          var fn = { patients: pList, doctors: dList }
+          res(fn);
+        }
+        id++;
       }
     });
   });
 }
 
-function getRelationshipById(platformInstance,i){
-  return new Promise((res,rej)=>{
-    platformInstance.relationships(i).then((relationship)=>{
-      //console.log("grbi");
-      //console.log(relationship);
-      res( {
+function getRelationshipById(platformInstance, i) {
+  return new Promise((res, rej) => {
+    platformInstance.relationships(i).then((relationship) => {
+      res({
         id: i,
         patient: relationship[0],
         other: relationship[1],
@@ -507,43 +433,31 @@ function getRelationshipById(platformInstance,i){
         type: relationship[3],
         active: relationship[4]
       })
-    });     
+    });
   })
 }
 
 
 
-export function getRelationships(platformInstance, tp,accountAdd) {
+export function getRelationships(platformInstance, tp, accountAdd) {
   return new Promise((res, rej) => {
     platformInstance.relationshipsCount().then(async (rCount) => {
-      //////console.log("Count")
-      //////console.log(rCount.toNumber())
-      
       var list = [];
-      if(rCount==0) res([])
+      if (rCount == 0) res([])
       var id = 0;
       for (var i = 1; i <= rCount; i++) {
-        getRelationshipById(platformInstance,i).then((rs)=>{
+        getRelationshipById(platformInstance, i).then((rs) => {
           id++;
           var add = tp == "pt" ? rs.patient : rs.other;
-          if(add == accountAdd){
-
-            list =[...list,rs]
+          if (add == accountAdd) {
+            list = [...list, rs]
           }
-          if(id==rCount){
-            //console.log("listo :"+list.length)
-            //console.log(list);
-            list = list.sort((a,b)=> a.id-b.id)
-            /*//console.log("despues del sort");
-            //console.log(list);*/
+          if (id == rCount) {
+            list = list.sort((a, b) => a.id - b.id)
             res(list)
           }
         })
-
-          
-
       }
-
     })
   });
 }
@@ -555,27 +469,18 @@ export function getFamilyDoctorRelationship(platformInstance, pt) {
         res(null);
       }
       var id = 0;
-
       for (var i = 1; i <= rCount; i++) {
-        
-       getRelationshipById(platformInstance,i).then((relationship)=>{
 
-         id++;
-
+        getRelationshipById(platformInstance, i).then((relationship) => {
+          id++;
           if (pt == relationship.patient && relationship.type == "fd") {
-
             res(relationship)
           }
-          
-          if(id==rCount){
-
+          if (id == rCount) {
             res(null)
           }
-
         })
-
       }
-     
     })
   });
 }
@@ -588,18 +493,18 @@ export function getRelationshipByAddresses(platformInstance, pt, ot) {
       }
       var id = 0;
       for (var i = 1; i <= rCount; i++) {
-       getRelationshipById(platformInstance,i).then((relationship)=>{
-         id++;
+        getRelationshipById(platformInstance, i).then((relationship) => {
+          id++;
           if (pt == relationship.patient && ot == relationship.other) {
             res(relationship)
           }
-          if(id==rCount){
+          if (id == rCount) {
             res(null)
           }
 
         })
 
-      }   
+      }
     })
   });
 }
@@ -613,19 +518,19 @@ export function getRelationshipByAddressesNFD(platformInstance, pt, ot) {
       }
       var id = 0;
       for (var i = 1; i <= rCount; i++) {
-       getRelationshipById(platformInstance,i).then((relationship)=>{
-         id++;
+        getRelationshipById(platformInstance, i).then((relationship) => {
+          id++;
           if (pt == relationship.patient && ot == relationship.other && relationship.type == "nm") {
             res(relationship)
           }
-          if(id==rCount){
+          if (id == rCount) {
             res(null)
           }
 
         })
 
       }
-     
+
     })
   });
 }
@@ -634,9 +539,9 @@ export function relationshipSent(platformInstance, pt, ot) {
   return new Promise((res, rej) => {
     platformInstance.relationshipsCount().then(async (rCount) => {
       var id = 0;
-      if (rCount==0)res(false)
+      if (rCount == 0) res(false)
       for (var i = 1; i <= rCount; i++) {
-        platformInstance.relationships(i).then((relationship)=>{
+        platformInstance.relationships(i).then((relationship) => {
           id++;
           if (pt == relationship[0] && ot == relationship[1]) {
             res(true);
@@ -644,12 +549,9 @@ export function relationshipSent(platformInstance, pt, ot) {
           if (id == rCount) {
             res(false)
           }
-          
         });
       }
-
     })
-
   });
 }
 
