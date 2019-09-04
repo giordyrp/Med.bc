@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getDataByPrivacy, SetMHistoryAll, getMHistoryData } from './Util'
+import { getDataByPrivacy, SetMHistoryAll, getMHistoryData, addHaemoglobinRecord } from './Util'
 import { Button, Form, Input,  Header, Loader, Grid, Icon, Segment, Message } from 'semantic-ui-react'
 import medHistoryJSON from '../../build/contracts/MedicalHistory.json'
 import DatePicker from "react-datepicker";
@@ -225,14 +225,15 @@ class MedHistory extends Component {
         var dateSplit = date.split(" ");
         var finalDate = dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[3]
 
-        this.setState({ addHaemoglobinRecordLoader: true })
+        this.setState({ addHaemoglobinRecordLoader: true });
+        addHaemoglobinRecord(this.props.web3, this.props.searchedAgent.mHistory, this.state.hLevel, finalDate, this.props.loggedAgent.address, this.props.searchedAgent.address) 
           .then((bool) => {
             if (!bool) {
               this.setState({ addHaemoglobinRecordLoader: false })
             } else {
               this.watchEvents();
             }
-          })
+          });
       }
     })
 
