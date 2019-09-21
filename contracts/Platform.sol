@@ -1,6 +1,7 @@
 pragma solidity ^0.5.0;
 
 import './Agent.sol';
+import './Patient.sol';
 
 contract Platform {
 
@@ -62,10 +63,18 @@ contract Platform {
     );
 
 
+    function compareStrings (string memory a, string memory b) public view 
+       returns (bool) {
+    return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))) );
+
+    }
 
     function registerAgent (string memory name,string memory uid, string memory did, string memory tipo) public {
         agentsCount++;
-        agents[agentsCount] = new Agent({ma:msg.sender,nm:name, ui:uid,di:did, tp:tipo});
+        if(compareStrings(tipo,"pt")){
+        agents[agentsCount] = new Patient({ma:msg.sender,nm:name, ui:uid,di:did, tp:tipo});
+        }else{
+        agents[agentsCount] = new Agent({ma:msg.sender,nm:name, ui:uid,di:did, tp:tipo});}
         registeredAgents[msg.sender] = agentsCount;      
         emit registerEvent(msg.sender);
     }

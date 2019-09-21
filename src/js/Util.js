@@ -1,4 +1,5 @@
 import agentJSON from '../../build/contracts/Agent.json'
+import patientJSON from '../../build/contracts/Patient.json'
 import medHistoryJSON from '../../build/contracts/MedicalHistory.json'
 
 function getAddress(ag) {
@@ -211,6 +212,8 @@ export function getMHistoryData(web3, mhAddress) {
 export function addHaemoglobinRecord(web3, mhAddress, val, dt, ot, ow) {
   return new Promise((res, rej) => {
     let mh = web3.eth.contract(medHistoryJSON.abi).at(mhAddress);
+    console.log(val);
+    console.log(dt);
     mh.addHaemoglobinRecord(val, dt, ow, ot, { from: ot }, function (error, result) {
       if (!error)
         res(true)
@@ -241,18 +244,34 @@ function getAgentById(platformInstance, i) {
           getUid(ag).then((uid) => {
             getDid(ag).then((did) => {
               getAType(ag).then((aType) => {
-                getMHistory(ag).then((mh) => {
+                if(aType=="pt"){
+                  ag = web3.eth.contract(patientJSON.abi).at(agent);
+                  getMHistory(ag).then((mh) => {
+                    var agentArray = {
+                      address: address,
+                      name: name,
+                      uid: uid,
+                      did: did,
+                      aType: aType,
+                      mHistory: mh
+                    };
+
+                      res(agentArray)
+
+                  });
+                }else{
                   var agentArray = {
-                    i: i,
                     address: address,
                     name: name,
                     uid: uid,
                     did: did,
-                    aType: aType,
-                    mHistory: mh
+                    aType: aType
                   };
-                  res(agentArray)
-                });
+
+                    res(agentArray)
+
+                }  
+
               });
             });
           });
@@ -295,19 +314,34 @@ export function getAgentByUID(platformInstance, web3, userId) {
               getUid(ag).then((uid) => {
                 getDid(ag).then((did) => {
                   getAType(ag).then((aType) => {
-                    getMHistory(ag).then((mh) => {
+                    if(aType=="pt"){
+                      ag = web3.eth.contract(patientJSON.abi).at(agent);
+                      getMHistory(ag).then((mh) => {
+                        var agentArray = {
+                          address: address,
+                          name: name,
+                          uid: uid,
+                          did: did,
+                          aType: aType,
+                          mHistory: mh
+                        };
+                        if (userId == uid) {
+                          res(agentArray)
+                        }
+                      });
+                    }else{
                       var agentArray = {
                         address: address,
                         name: name,
                         uid: uid,
                         did: did,
-                        aType: aType,
-                        mHistory: mh
+                        aType: aType
                       };
                       if (userId == uid) {
                         res(agentArray)
                       }
-                    });
+                    }                    
+                    
                   });
                 });
               });
@@ -352,19 +386,35 @@ export function getAgentByAddress(platformInstance, web3, userAddress) {
               getUid(ag).then((uid) => {
                 getDid(ag).then((did) => {
                   getAType(ag).then((aType) => {
-                    getMHistory(ag).then((mh) => {
+
+                    if(aType=="pt"){
+                      ag = web3.eth.contract(patientJSON.abi).at(agent);
+                      getMHistory(ag).then((mh) => {
+                        var agentArray = {
+                          address: address,
+                          name: name,
+                          uid: uid,
+                          did: did,
+                          aType: aType,
+                          mHistory: mh
+                        };
+                        if (userAddress == address) {
+                          res(agentArray)
+                        }
+                      });
+                    }else{
                       var agentArray = {
                         address: address,
                         name: name,
                         uid: uid,
                         did: did,
-                        aType: aType,
-                        mHistory: mh
+                        aType: aType
                       };
                       if (userAddress == address) {
                         res(agentArray)
                       }
-                    });
+                    }
+
                   });
                 });
               });

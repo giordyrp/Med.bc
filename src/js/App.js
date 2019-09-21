@@ -49,7 +49,7 @@ class App extends React.Component {
           window.location.reload(false);
         }
       });
-      this.platform.at('0xdc03a73d1c9989ccc3beecaaf64ccb1022910070').then((platformInstance) => {
+      this.platform.at('0x4153d83904212f574b313EF5C0D8028078aA3257').then((platformInstance) => {
         this.platformInstance = platformInstance 
         this.watchEvents()
         return this.platformInstance.getAgentIndex({from:this.state.account})})

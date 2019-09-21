@@ -35,6 +35,8 @@ contract MedicalHistory {
         emit haemoglobinEvent(ow,ot);
     }
 
+
+
     function setAll(string memory nm,string memory ha, string memory pn, address ow, address ot) public {
         name = nm;
         homeAddress = ha;
