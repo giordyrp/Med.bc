@@ -232,7 +232,7 @@ class MedHistory extends Component {
             } else {
               this.watchEvents();
             }
-          })
+          });
       }
     })
 
