@@ -21,7 +21,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "bootstrap": "^4.0.0",
     "css-loader": "^0.28.10",
-    "i": "^0.3.6",
+    "i": "^0.3.7",
     "json-loader": "^0.5.7",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
